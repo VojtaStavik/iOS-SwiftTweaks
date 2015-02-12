@@ -8,6 +8,9 @@
 
 import Foundation
 
+let kNavigationBarHeight : CGFloat = 64
+
+
 func delay(delay:Double, closure:()->()) {
     dispatch_after(
         dispatch_time(
@@ -30,3 +33,51 @@ func RGBA(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> UIColo
 
 }
 
+
+func between<T : Comparable>(minimum: T, maximum: T, value: T) -> T {
+    
+    return min( max(minimum, value) , maximum)
+}
+
+
+extension String {
+    
+    var uppercaseString : String {
+        
+        return (self as NSString).uppercaseString
+    }
+}
+
+
+extension Array {
+    mutating func removeObject<U: Equatable>(object: U) {
+        var index: Int?
+        for (idx, objectToCompare) in enumerate(self) {
+            if let to = objectToCompare as? U {
+                if object == to {
+                    index = idx
+                }
+            }
+        }
+        
+        if index != nil {
+            self.removeAtIndex(index!)
+        }
+    }
+}
+
+
+extension UIScreen {
+    
+    class func screenWidth() -> CGFloat! {
+        
+        return UIScreen.mainScreen().bounds.size.width
+    }
+    
+    class func screenHeight() -> CGFloat! {
+        
+        return UIScreen.mainScreen().bounds.size.height
+    }
+    
+    
+}
