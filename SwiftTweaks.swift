@@ -1,6 +1,5 @@
 //
 //  SwiftTweaks.swift
-//  Wiretap
 //
 //  Created by Vojta Stavik on 27/01/15.
 //  Copyright (c) 2015 Vojtech Stavik. All rights reserved.
