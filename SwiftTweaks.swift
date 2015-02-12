@@ -12,11 +12,15 @@ let kNavigationBarHeight : CGFloat = 64
 
 
 func delay(delay:Double, closure:()->()) {
+
     dispatch_after(
+    
         dispatch_time(
+        
             DISPATCH_TIME_NOW,
             Int64(delay * Double(NSEC_PER_SEC))
         ),
+
         dispatch_get_main_queue(), closure)
 }
 
@@ -50,17 +54,23 @@ extension String {
 
 
 extension Array {
+
     mutating func removeObject<U: Equatable>(object: U) {
+    
         var index: Int?
         for (idx, objectToCompare) in enumerate(self) {
+        
             if let to = objectToCompare as? U {
+            
                 if object == to {
+                
                     index = idx
                 }
             }
         }
         
         if index != nil {
+
             self.removeAtIndex(index!)
         }
     }
