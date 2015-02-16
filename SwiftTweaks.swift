@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 let kNavigationBarHeight : CGFloat = 64
 
