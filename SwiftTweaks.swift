@@ -88,6 +88,22 @@ extension UIScreen {
         
         return UIScreen.mainScreen().bounds.size.height
     }
+}
+
+
+extension UITableViewCell {
     
+    class func reusableIdentifier() -> String! {
+        
+        return NSStringFromClass(self) + "Identifier"
+    }
+}
+
+
+extension UICollectionViewCell {
     
+    class func reusableIdentifier() -> String! {
+        
+        return NSStringFromClass(self) + "Identifier"
+    }
 }
