@@ -44,7 +44,7 @@ func between<T : Comparable>(minimum: T, maximum: T, value: T) -> T {
 }
 
 
-func randomStringWithLength (len : Int) -> NSString {
+func randomStringWithLength (len : Int) -> String {
     
     let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     
@@ -56,7 +56,7 @@ func randomStringWithLength (len : Int) -> NSString {
         randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
     }
     
-    return randomString
+    return randomString as! String
 }
 
 
