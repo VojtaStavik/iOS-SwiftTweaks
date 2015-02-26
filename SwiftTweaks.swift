@@ -218,6 +218,6 @@ extension UIColor {
             print("Invalid RGB string, missing '#' as prefix")
         }
         
-        return RGBA(red, green, blue, alpha)
+        return UIColor(red: red, green: green, blue: blue, alpha: alpha)
     }
 }
