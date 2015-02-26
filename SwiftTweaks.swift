@@ -56,7 +56,8 @@ func randomStringWithLength (len : Int) -> String {
         randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
     }
     
-    return randomString.copy() as! String
+    return randomString.copy() as! String  // Swift > 1.2
+//    return randomString.copy() as String // Swift < 1.2
 }
 
 
