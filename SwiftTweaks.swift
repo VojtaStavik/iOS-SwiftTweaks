@@ -143,6 +143,9 @@ extension UICollectionViewCell {
 
 extension UIImage {
 	
+    /**
+    Returns image with size 1x1px of certain color.
+    */
 	class func imageWithColor(color : UIColor) -> UIImage {
 		
 		let rect = CGRectMake(0.0, 0.0, 1.0, 1.0)
@@ -158,6 +161,29 @@ extension UIImage {
 		return image
 		
 	}
+
+    /**
+    Returns current image colored to certain color.
+    */
+    func imageWithColor(color: UIColor) -> UIImage {
+
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
+
+        let context = UIGraphicsGetCurrentContext()
+        CGContextTranslateCTM(context, 0, self.size.height)
+        CGContextScaleCTM(context, 1.0, -1.0)
+        CGContextSetBlendMode(context, kCGBlendModeNormal)
+
+        let rect = CGRectMake(0, 0, self.size.width, self.size.height)
+        CGContextClipToMask(context, rect, self.CGImage)
+        color.setFill()
+        CGContextFillRect(context, rect)
+
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+            
+        return newImage;
+    }
 }
 
 extension UIColor {
@@ -219,5 +245,24 @@ extension UIColor {
         }
         
         return UIColor(red: red, green: green, blue: blue, alpha: alpha)
+    }
+}
+
+
+extension UINavigationController {
+    
+    func setTransparentNavigationBar() {
+        
+        self.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        self.navigationBar.shadowImage = UIImage()
+        self.navigationBar.translucent = true
+    }
+}
+
+extension UICollectionView {
+    
+    var currentPageNumber: Int {
+        
+        return Int(ceil(self.contentOffset.x / self.frame.size.width))
     }
 }
