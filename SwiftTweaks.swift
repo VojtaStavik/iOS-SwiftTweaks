@@ -11,7 +11,7 @@ import UIKit
 let kNavigationBarHeight : CGFloat = 64
 
 
-func delay(delay:Double, closure:()->()) {
+func delay(delay:Double,closure:  ()->()) {
 
     dispatch_after(
     
@@ -82,6 +82,14 @@ extension String {
     var uppercaseString : String {
         
         return (self as NSString).uppercaseString
+    }
+    
+    
+    func isValidEmail() -> Bool {
+
+        let regex = NSRegularExpression(pattern: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$", options: .CaseInsensitive, error: nil)
+        
+        return regex?.firstMatchInString(self, options: nil, range: NSMakeRange(0, count(self))) != nil
     }
 }
 
@@ -249,6 +257,48 @@ extension UIColor {
 }
 
 
+extension UIWindow {
+
+    func visibleViewController() -> UIViewController? {
+    
+        if let rootViewController: UIViewController  = self.rootViewController {
+        
+            return UIWindow.getVisibleViewControllerFrom(rootViewController)
+        }
+
+        return nil
+    }
+    
+    class func getVisibleViewControllerFrom(vc:UIViewController) -> UIViewController {
+        
+        if vc.isKindOfClass(UINavigationController.self) {
+            
+            let navigationController = vc as! UINavigationController
+            return UIWindow.getVisibleViewControllerFrom( navigationController.visibleViewController)
+        }
+        
+        else if vc.isKindOfClass(UITabBarController.self) {
+            
+            let tabBarController = vc as! UITabBarController
+            return UIWindow.getVisibleViewControllerFrom(tabBarController.selectedViewController!)
+            
+        }
+        
+        else {
+            
+            if let presentedViewController = vc.presentedViewController {
+                
+                return UIWindow.getVisibleViewControllerFrom(presentedViewController)
+                
+            } else {
+                
+                return vc
+            }
+        }
+    }
+}
+
+    
 extension UINavigationController {
     
     func setTransparentNavigationBar() {
