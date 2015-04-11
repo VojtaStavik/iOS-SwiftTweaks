@@ -5,7 +5,7 @@
 //  Copyright (c) 2015 STRV. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 let log = LogService()
 
