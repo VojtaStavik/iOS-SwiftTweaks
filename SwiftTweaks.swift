@@ -25,19 +25,6 @@ func delay(delay:Double,closure:  ()->()) {
 }
 
 
-func RGB(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor! {
-    
-    return RGBA(red, green, blue, 1)
-}
-
-
-func RGBA(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> UIColor! {
-    
-    return UIColor(red: red/255.0, green: green/255.0, blue: blue/255.0, alpha: alpha)
-
-}
-
-
 func between<T : Comparable>(minimum: T, maximum: T, value: T) -> T {
     
     return min( max(minimum, value) , maximum)
@@ -56,8 +43,7 @@ func randomStringWithLength (len : Int) -> String {
         randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
     }
     
-    return randomString.copy() as! String  // Swift > 1.2
-//    return randomString.copy() as String // Swift < 1.2
+    return randomString.copy() as! String
 }
 
 
@@ -75,16 +61,22 @@ func printAllAvailableFonts() {
 }
 
 
+func RGB(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor! {
+    
+    return RGBA(red, green, blue, 1)
+}
+
+
+func RGBA(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> UIColor! {
+    
+    return UIColor(red: red/255.0, green: green/255.0, blue: blue/255.0, alpha: alpha)
+}
+
+
 // MARK: - Extensions
 
 extension String {
-    
-    var uppercaseString : String {
-        
-        return (self as NSString).uppercaseString
-    }
-    
-    
+
     func isValidEmail() -> Bool {
 
         let regex = NSRegularExpression(pattern: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$", options: .CaseInsensitive, error: nil)
@@ -99,6 +91,7 @@ extension Array {
     mutating func removeObject<U: Equatable>(object: U) {
     
         var index: Int?
+        
         for (idx, objectToCompare) in enumerate(self) {
         
             if let to = objectToCompare as? U {
@@ -110,9 +103,9 @@ extension Array {
             }
         }
         
-        if index != nil {
+        if let index = index {
 
-            self.removeAtIndex(index!)
+            self.removeAtIndex(index)
         }
     }
 }
@@ -193,6 +186,7 @@ extension UIImage {
         return newImage;
     }
 }
+
 
 extension UIColor {
     
@@ -308,6 +302,7 @@ extension UINavigationController {
         self.navigationBar.translucent = true
     }
 }
+
 
 extension UICollectionView {
     
