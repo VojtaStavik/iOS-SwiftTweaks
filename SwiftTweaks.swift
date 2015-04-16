@@ -31,19 +31,28 @@ func between<T : Comparable>(minimum: T, maximum: T, value: T) -> T {
 }
 
 
+func repeat(cycles: Int, closure: () -> ()) {
+    
+    for _ in 0..<cycles {
+        
+        closure()
+    }
+}
+
+
 func randomStringWithLength (len : Int) -> String {
     
-    let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     
-    var randomString : NSMutableString = NSMutableString(capacity: len)
+    var randomString = ""
     
-    for (var i=0; i < len; i++){
-        var length = UInt32 (letters.length)
-        var rand = arc4random_uniform(length)
-        randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
+    repeat(len) {
+        
+        let rand = Int(arc4random_uniform(UInt32(count(letters))))
+        randomString.append(letters[rand])
     }
-    
-    return randomString.copy() as! String
+
+    return randomString
 }
 
 
@@ -73,9 +82,23 @@ func RGBA(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> UIColo
 }
 
 
+
+
 // MARK: - Extensions
 
 extension String {
+
+    subscript (i: Int) -> Character {
+        return self[advance(self.startIndex, i)]
+    }
+    
+    subscript (i: Int) -> String {
+        return String(self[i] as Character)
+    }
+    
+    subscript (r: Range<Int>) -> String {
+        return substringWithRange(Range(start: advance(startIndex, r.startIndex), end: advance(startIndex, r.endIndex)))
+    }
 
     func isValidEmail() -> Bool {
 
