@@ -148,6 +148,15 @@ extension UIScreen {
 }
 
 
+extension UICollectionReusableView {
+    
+    class func reusableIdentifier() -> String! {
+        
+        return NSStringFromClass(self) + "Identifier"
+    }
+}
+
+
 extension UITableViewCell {
     
     class func reusableIdentifier() -> String! {
@@ -156,14 +165,6 @@ extension UITableViewCell {
     }
 }
 
-
-extension UICollectionViewCell {
-    
-    class func reusableIdentifier() -> String! {
-        
-        return NSStringFromClass(self) + "Identifier"
-    }
-}
 
 extension UIImage {
 	
