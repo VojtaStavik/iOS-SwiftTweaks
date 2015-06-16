@@ -10,32 +10,36 @@ import Foundation
 let log = LogService()
 
 
-enum LogLevel {
-    
-    case Debug
-    case Production
-    case ProductionWithCrashlogs
-}
-
 class LogService {
     
-    var sendLogToCrashLogServiceAction : ((text:String)->())? = nil
     
-    var ErrorDomain: String = "DefaultDomainError"
+    enum GeneralLogLevel {
+        
+        case Debug
+        case Production
+        case ProductionWithCrashlogs
+    }
     
-    var logLevel : LogLevel = .Debug
+    
+    var crashlogAction : ((text:String)->())? = nil
+    
+    var logLevel : GeneralLogLevel = .Debug
     
     
-    func message(text: String) {
+    func message(text: String, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) {
+        
+        let filename = file.lastPathComponent.stringByDeletingPathExtension
+        
+        let messageText = "\(filename).\(function)[\(line)]: \n" + text + "\n ==============="
         
         if logLevel == .Debug {
             
-            println(text)
+            println(messageText)
         }
         
         if logLevel == .ProductionWithCrashlogs {
             
-            sendLogToCrashLogServiceAction?(text: text)
+            crashlogAction?(text: messageText)
         }
     }
     
@@ -55,10 +59,8 @@ class LogService {
         }
         
         
-        let filename = file.lastPathComponent.stringByDeletingPathExtension
+        var messageText = "\n ERROR! \n: Message: \(text) \n Error description: \(errorText)"
         
-        var messageText = "\n ERROR! \n \(filename).\(function)[\(line)]: \n Message: \(text) \n Error description: \(errorText)"
-        
-        self.message(messageText)
+        self.message(messageText, file, function, line)
     }
 }
