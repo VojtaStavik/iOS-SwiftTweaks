@@ -12,7 +12,6 @@ let log = LogService()
 
 class LogService {
     
-    
     enum GeneralLogLevel {
         
         case Debug
@@ -30,7 +29,7 @@ class LogService {
         
         let filename = file.lastPathComponent.stringByDeletingPathExtension
         
-        let messageText = "\(filename).\(function)[\(line)]: \n" + text + "\n ==============="
+        let messageText = "\n===============" + " \(filename).\(function)[\(line)]: \n " + text + "\n==============="
         
         if logLevel == .Debug {
             
@@ -46,20 +45,9 @@ class LogService {
     
     func error(text: String, error: NSError?, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) {
 
-        let errorText : String
-        
-        if let error = error {
-            
-            errorText = error.description
-        }
-        
-        else {
-            
-            errorText = "No NSError object"
-        }
-        
-        
-        var messageText = "\n ERROR! \n: Message: \(text) \n Error description: \(errorText)"
+        let errorText = error?.description ?? "No NSError object"
+
+        var messageText = "ERROR! \n Message: \(text) \n Error object: \(errorText)"
         
         self.message(messageText, file, function, line)
     }
