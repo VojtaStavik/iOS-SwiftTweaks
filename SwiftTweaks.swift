@@ -106,6 +106,11 @@ extension String {
         
         return regex?.firstMatchInString(self, options: nil, range: NSMakeRange(0, count(self))) != nil
     }
+    
+    var isNotEmpty: Bool {
+        
+        return !isEmpty
+    }
 }
 
 
