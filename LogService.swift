@@ -1,7 +1,7 @@
 //
 //  LogService.swift
 //
-//  Created by Vojta Stavik on 17/02/15.
+//  Created by Vojta Stavik
 //  Copyright (c) 2015 STRV. All rights reserved.
 //
 
@@ -9,6 +9,7 @@ import Foundation
 
 let log = LogService()
 
+typealias ExternalLogAction = (text: String) -> Void
 
 class LogService {
     
@@ -20,35 +21,74 @@ class LogService {
     }
     
     
-    var crashlogAction : ((text:String)->())? = nil
+    // We use this because of nice readible syntax :
+    //  log.message("Test remote")(.RemoteLogging)
+    //  log.message("Text local")
+    
+    enum ExternalLogActions {
+        
+        case RemoteLogging
+        case None
+    }
+    
+    
+    var crashLogAction:     ExternalLogAction? = nil
+    var messageLogAction:   ExternalLogAction? = nil
+    var errorLogAction:     ExternalLogAction? = nil
     
     var logLevel : GeneralLogLevel = .Debug
     
     
-    func message(text: String, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) {
+    typealias Message = String -> String
+    
+    private func detailedMessage(_ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) -> Message {
         
-        let filename = file.lastPathComponent.stringByDeletingPathExtension
-        
-        let messageText = "\n===============" + " \(filename).\(function)[\(line)]: \n " + text + "\n==============="
-        
-        if logLevel == .Debug {
+        return { text -> String in
             
-            println(messageText)
-        }
-        
-        if logLevel == .ProductionWithCrashlogs {
+            let filename = file.lastPathComponent.stringByDeletingPathExtension
             
-            crashlogAction?(text: messageText)
+            let messageText = "\n===============" + " \(filename).\(function)[\(line)]: \n " + text + "\n==============="
+            
+            return messageText
         }
     }
     
     
-    func error(text: String, error: NSError?, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) {
-
+    func message(text: String, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) -> (ExternalLogActions -> Void)! {
+        
+        let message = detailedMessage(file, function, line)
+        
+        
+        if logLevel == .Debug {
+            
+            println(message(text))
+        }
+        
+        
+        if logLevel == .ProductionWithCrashlogs {
+            
+            crashLogAction?(text: message(text))
+        }
+        
+        
+        return { externalLogAction -> Void in
+            
+            if externalLogAction == .RemoteLogging { self.messageLogAction?(text: message(text)) }
+        }
+    }
+    
+    
+    func error(text: String, error: NSError?, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) -> (ExternalLogActions -> Void)! {
+        
         let errorText = error?.description ?? "No NSError object"
-
+        
         var messageText = "ERROR! \n Message: \(text) \n Error object: \(errorText)"
         
-        self.message(messageText, file, function, line)
+        message(messageText, file, function, line)
+        
+        return { externalLogAction -> Void in
+            
+            if externalLogAction == .RemoteLogging { self.errorLogAction?(text: self.detailedMessage(file, function, line)(messageText)) }
+        }
     }
 }
