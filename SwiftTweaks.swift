@@ -12,15 +12,15 @@ let kNavigationBarHeight : CGFloat = 64
 
 
 func delay(delay:Double,closure:  ()->()) {
-
-    dispatch_after(
     
-        dispatch_time(
+    dispatch_after(
         
+        dispatch_time(
+            
             DISPATCH_TIME_NOW,
             Int64(delay * Double(NSEC_PER_SEC))
         ),
-
+        
         dispatch_get_main_queue(), closure)
 }
 
@@ -31,7 +31,7 @@ func between<T : Comparable>(minimum: T, maximum: T, value: T) -> T {
 }
 
 
-func repeat(cycles: Int, closure: () -> ()) {
+func repetition(cycles: Int, closure: () -> ()) {
     
     for _ in 0..<cycles {
         
@@ -46,12 +46,12 @@ func randomStringWithLength (len : Int) -> String {
     
     var randomString = ""
     
-    repeat(len) {
+    repetition(len) {
         
-        let rand = Int(arc4random_uniform(UInt32(count(letters))))
+        let rand = Int(arc4random_uniform(UInt32(letters.characters.count)))
         randomString.append(letters[rand])
     }
-
+    
     return randomString
 }
 
@@ -59,26 +59,27 @@ func randomStringWithLength (len : Int) -> String {
 func printAllAvailableFonts() {
     
     let fontFamilyNames = UIFont.familyNames()
-
+    
     for familyName in fontFamilyNames {
         
-        println("------------------------------")
-        println("Font Family Name = [\(familyName)]")
-        let names = UIFont.fontNamesForFamilyName(familyName as! String)
-        println("Font Names = [\(names)]")
+        print("------------------------------")
+        print("Font Family Name = [\(familyName)]")
+        let names = UIFont.fontNamesForFamilyName(familyName )
+        print("Font Names = [\(names)]")
     }
 }
 
 
-func RGB(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor! {
+func RGB(red: CGFloat,_ green: CGFloat,_ blue: CGFloat) -> UIColor! {
     
     return RGBA(red, green, blue, 1)
 }
 
 
-func RGBA(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> UIColor! {
+func RGBA(red: CGFloat,_ green: CGFloat,_ blue: CGFloat,_ alpha: CGFloat) -> UIColor! {
     
     return UIColor(red: red/255.0, green: green/255.0, blue: blue/255.0, alpha: alpha)
+    
 }
 
 
@@ -87,9 +88,11 @@ func RGBA(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> UIColo
 // MARK: - Extensions
 
 extension String {
-
+    
+    
+    
     subscript (i: Int) -> Character {
-        return self[advance(self.startIndex, i)]
+        return self[self.startIndex.advancedBy(i) ]
     }
     
     subscript (i: Int) -> String {
@@ -97,14 +100,14 @@ extension String {
     }
     
     subscript (r: Range<Int>) -> String {
-        return substringWithRange(Range(start: advance(startIndex, r.startIndex), end: advance(startIndex, r.endIndex)))
+        return substringWithRange(Range(start: startIndex.advancedBy(r.startIndex), end: startIndex.advancedBy(r.endIndex)))
     }
-
+    
     func isValidEmail() -> Bool {
-
-        let regex = NSRegularExpression(pattern: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$", options: .CaseInsensitive, error: nil)
         
-        return regex?.firstMatchInString(self, options: nil, range: NSMakeRange(0, count(self))) != nil
+        let regex = try? NSRegularExpression(pattern: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$", options: [NSRegularExpressionOptions.CaseInsensitive])
+        
+        return regex?.firstMatchInString(self, options: [], range: NSMakeRange(0, self.characters.count)) != nil
     }
     
     var isNotEmpty: Bool {
@@ -118,30 +121,30 @@ extension UINavigationController {
     
     var rootViewController: UIViewController {
         
-        return self.viewControllers.first as! UIViewController
+        return self.viewControllers.first!
     }
 }
 
 
 extension Array {
-
-    mutating func removeObject<U: Equatable>(object: U) {
     
+    mutating func removeObject<U: Equatable>(object: U) {
+        
         var index: Int?
         
-        for (idx, objectToCompare) in enumerate(self) {
-        
-            if let to = objectToCompare as? U {
+        for (idx, objectToCompare) in self.enumerate() {
             
-                if object == to {
+            if let to = objectToCompare as? U {
                 
+                if object == to {
+                    
                     index = idx
                 }
             }
         }
         
         if let index = index {
-
+            
             self.removeAtIndex(index)
         }
     }
@@ -181,46 +184,48 @@ extension UITableViewCell {
 
 
 extension UIImage {
-	
+    
     /**
     Returns image with size 1x1px of certain color.
     */
-	class func imageWithColor(color : UIColor) -> UIImage {
-		
-		let rect = CGRectMake(0.0, 0.0, 1.0, 1.0)
-		UIGraphicsBeginImageContext(rect.size)
-		let context = UIGraphicsGetCurrentContext()
-		
-		CGContextSetFillColorWithColor(context, color.CGColor)
-		CGContextFillRect(context, rect)
-		
-		let image = UIGraphicsGetImageFromCurrentImageContext()
-		UIGraphicsEndImageContext()
-		
-		return image
-		
-	}
-
+    class func imageWithColor(color : UIColor) -> UIImage {
+        
+        let rect = CGRectMake(0.0, 0.0, 1.0, 1.0)
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        
+        CGContextSetFillColorWithColor(context, color.CGColor)
+        CGContextFillRect(context, rect)
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image
+        
+    }
+    
     /**
     Returns current image colored to certain color.
     */
     func imageWithColor(color: UIColor) -> UIImage {
-
+        
         UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
-
+        
         let context = UIGraphicsGetCurrentContext()
         CGContextTranslateCTM(context, 0, self.size.height)
         CGContextScaleCTM(context, 1.0, -1.0)
-        CGContextSetBlendMode(context, kCGBlendModeNormal)
-
+        
+        
+        CGContextSetBlendMode(context, .Normal)
+        
         let rect = CGRectMake(0, 0, self.size.width, self.size.height)
         CGContextClipToMask(context, rect, self.CGImage)
         color.setFill()
         CGContextFillRect(context, rect)
-
+        
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-            
+        
         return newImage;
     }
 }
@@ -237,14 +242,16 @@ extension UIColor {
         
         if hexString.hasPrefix("#") {
             
-            let index   = advance(hexString.startIndex, 1)
+            let index   = hexString.startIndex.advancedBy(1)
             let hex     = hexString.substringFromIndex(index)
             let scanner = NSScanner(string: hex)
             var hexValue: CUnsignedLongLong = 0
             
             if scanner.scanHexLongLong(&hexValue) {
                 
-                switch (count(hex)) {
+                
+                
+                switch (hex.characters.count) {
                     
                 case 3:
                     red   = CGFloat((hexValue & 0xF00) >> 8)       / 15.0
@@ -275,7 +282,7 @@ extension UIColor {
                 
             } else {
                 
-                println("Scan hex error")
+                print("Scan hex error")
             }
             
         } else {
@@ -288,21 +295,21 @@ extension UIColor {
     
     
     class func colorWithHexString (hex:String) -> UIColor {
-
+        
         return UIColor(hexString: hex)
     }
 }
 
 
 extension UIWindow {
-
-    func visibleViewController() -> UIViewController? {
     
-        if let rootViewController: UIViewController  = self.rootViewController {
+    func visibleViewController() -> UIViewController? {
         
+        if let rootViewController: UIViewController  = self.rootViewController {
+            
             return UIWindow.getVisibleViewControllerFrom(rootViewController)
         }
-
+        
         return nil
     }
     
@@ -311,16 +318,16 @@ extension UIWindow {
         if vc.isKindOfClass(UINavigationController.self) {
             
             let navigationController = vc as! UINavigationController
-            return UIWindow.getVisibleViewControllerFrom( navigationController.visibleViewController)
+            return UIWindow.getVisibleViewControllerFrom( navigationController.visibleViewController!)
         }
-        
+            
         else if vc.isKindOfClass(UITabBarController.self) {
             
             let tabBarController = vc as! UITabBarController
             return UIWindow.getVisibleViewControllerFrom(tabBarController.selectedViewController!)
             
         }
-        
+            
         else {
             
             if let presentedViewController = vc.presentedViewController {
@@ -335,7 +342,7 @@ extension UIWindow {
     }
 }
 
-    
+
 extension UINavigationController {
     
     func setTransparentNavigationBar() {
