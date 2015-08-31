@@ -41,11 +41,11 @@ class LogService {
     
     typealias Message = String -> String
     
-    private func detailedMessage(_ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) -> Message {
+    private func detailedMessage(file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) -> Message {
         
         return { text -> String in
-            
-            let filename = file.lastPathComponent.stringByDeletingPathExtension
+            let filename = NSURL(string: file)?.URLByDeletingPathExtension?.lastPathComponent
+            //let filename = file.lastPathComponent.stringByDeletingPathExtension
             
             let messageText = "\n===============" + " \(filename).\(function)[\(line)]: \n " + text + "\n==============="
             
@@ -61,7 +61,7 @@ class LogService {
         
         if logLevel == .Debug {
             
-            println(message(text))
+            print(message(text))
         }
         
         
@@ -82,7 +82,7 @@ class LogService {
         
         let errorText = error?.description ?? "No NSError object"
         
-        var messageText = "ERROR! \n Message: \(text) \n Error object: \(errorText)"
+        let messageText = "ERROR! \n Message: \(text) \n Error object: \(errorText)"
         
         message(messageText, file, function, line)
         
