@@ -312,17 +312,25 @@ extension UIWindow {
             
             let navigationController = vc as! UINavigationController
             return UIWindow.getVisibleViewControllerFrom( navigationController.visibleViewController)
-        }
         
-        else if vc.isKindOfClass(UITabBarController.self) {
+        } else if vc.isKindOfClass(UITabBarController.self) {
             
             let tabBarController = vc as! UITabBarController
             return UIWindow.getVisibleViewControllerFrom(tabBarController.selectedViewController!)
             
-        }
+        } else if vc.isKindOfClass(UIPageViewController.self) {
         
-        else {
-            
+            if let topVC = (vc as? UIPageViewController)?.viewControllers.first as? UIViewController {
+                
+                return UIWindow.getVisibleViewControllerFrom(topVC)
+                
+            } else {
+                
+                return vc as! UIPageViewController
+            }
+        
+        } else {
+    
             if let presentedViewController = vc.presentedViewController {
                 
                 return UIWindow.getVisibleViewControllerFrom(presentedViewController)
