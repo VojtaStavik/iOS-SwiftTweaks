@@ -7,11 +7,11 @@
 
 import Foundation
 
-public let log = LogService()
-
 public typealias ExternalLogAction = (text: String) -> Void
 
 public class LogService {
+    
+    public static let sharedService = LogService()
     
     public enum GeneralLogLevel {
         
