@@ -169,13 +169,7 @@ public extension UICollectionReusableView {
     
     public var reusableIdentifier : String {
         
-        return NSStringFromClass(self) + "Identifier"
-    }
-    
-    @available(*, deprecated, message="Use reusableIdentifier variable instead.")
-    public class func reusableIdentifier() -> String {
-        
-        return self.reusableIdentifier
+        return NSStringFromClass(self.dynamicType) + "Identifier"
     }
 }
 
@@ -184,13 +178,7 @@ public extension UITableViewCell {
     
     public var reusableIdentifier : String {
         
-        return NSStringFromClass(self) + "Identifier"
-    }
-    
-    @available(*, deprecated, message="Use reusableIdentifier variable instead.")
-    public class func reusableIdentifier() -> String {
-        
-        return self.reusableIdentifier
+        return NSStringFromClass(self.dynamicType) + "Identifier"
     }
 }
 

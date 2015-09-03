@@ -45,7 +45,6 @@ public class LogService {
         
         return { text -> String in
             let filename = NSURL(string: file)?.URLByDeletingPathExtension?.lastPathComponent
-            //let filename = file.lastPathComponent.stringByDeletingPathExtension
             
             let messageText = "\n===============" + " \(filename).\(function)[\(line)]: \n " + text + "\n==============="
             
