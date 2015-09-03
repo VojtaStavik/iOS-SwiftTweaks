@@ -8,10 +8,10 @@
 import Foundation
 import UIKit
 
-let kNavigationBarHeight : CGFloat = 64
+public let kNavigationBarHeight : CGFloat = 64
 
 
-func delay(delay:Double,closure:  ()->()) {
+public func delay(delay:Double,closure:  ()->()) {
     
     dispatch_after(
         
@@ -25,13 +25,13 @@ func delay(delay:Double,closure:  ()->()) {
 }
 
 
-func between<T : Comparable>(minimum: T, maximum: T, value: T) -> T {
+public func between<T : Comparable>(minimum: T, maximum: T, value: T) -> T {
     
     return min( max(minimum, value) , maximum)
 }
 
 
-func repetition(cycles: Int, closure: () -> ()) {
+public func repetition(cycles: Int, closure: () -> ()) {
     
     for _ in 0..<cycles {
         
@@ -40,7 +40,7 @@ func repetition(cycles: Int, closure: () -> ()) {
 }
 
 
-func randomStringWithLength (len : Int) -> String {
+public func randomStringWithLength (len : Int) -> String {
     
     let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     
@@ -56,7 +56,7 @@ func randomStringWithLength (len : Int) -> String {
 }
 
 
-func printAllAvailableFonts() {
+public func printAllAvailableFonts() {
     
     let fontFamilyNames = UIFont.familyNames()
     
@@ -70,13 +70,13 @@ func printAllAvailableFonts() {
 }
 
 
-func RGB(red: CGFloat,_ green: CGFloat,_ blue: CGFloat) -> UIColor! {
+public func RGB(red: CGFloat,_ green: CGFloat,_ blue: CGFloat) -> UIColor! {
     
     return RGBA(red, green, blue, 1)
 }
 
 
-func RGBA(red: CGFloat,_ green: CGFloat,_ blue: CGFloat,_ alpha: CGFloat) -> UIColor! {
+public func RGBA(red: CGFloat,_ green: CGFloat,_ blue: CGFloat,_ alpha: CGFloat) -> UIColor! {
     
     return UIColor(red: red/255.0, green: green/255.0, blue: blue/255.0, alpha: alpha)
     
@@ -87,48 +87,48 @@ func RGBA(red: CGFloat,_ green: CGFloat,_ blue: CGFloat,_ alpha: CGFloat) -> UIC
 
 // MARK: - Extensions
 
-extension String {
+public extension String {
     
     
     
-    subscript (i: Int) -> Character {
+    public subscript (i: Int) -> Character {
         return self[self.startIndex.advancedBy(i) ]
     }
     
-    subscript (i: Int) -> String {
+    public subscript (i: Int) -> String {
         return String(self[i] as Character)
     }
     
-    subscript (r: Range<Int>) -> String {
+    public subscript (r: Range<Int>) -> String {
         return substringWithRange(Range(start: startIndex.advancedBy(r.startIndex), end: startIndex.advancedBy(r.endIndex)))
     }
     
-    func isValidEmail() -> Bool {
+    public func isValidEmail() -> Bool {
         
         let regex = try? NSRegularExpression(pattern: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$", options: [NSRegularExpressionOptions.CaseInsensitive])
         
         return regex?.firstMatchInString(self, options: [], range: NSMakeRange(0, self.characters.count)) != nil
     }
     
-    var isNotEmpty: Bool {
+    public var isNotEmpty: Bool {
         
         return !isEmpty
     }
 }
 
 
-extension UINavigationController {
+public extension UINavigationController {
     
-    var rootViewController: UIViewController {
+    public var rootViewController: UIViewController {
         
         return self.viewControllers.first!
     }
 }
 
 
-extension Array {
+public extension Array {
     
-    mutating func removeObject<U: Equatable>(object: U) {
+    public mutating func removeObject<U: Equatable>(object: U) {
         
         var index: Int?
         
@@ -151,44 +151,56 @@ extension Array {
 }
 
 
-extension UIScreen {
+public extension UIScreen {
     
-    class func screenWidth() -> CGFloat! {
+    public class func screenWidth() -> CGFloat! {
         
         return UIScreen.mainScreen().bounds.size.width
     }
     
-    class func screenHeight() -> CGFloat! {
+    public class func screenHeight() -> CGFloat! {
         
         return UIScreen.mainScreen().bounds.size.height
     }
 }
 
 
-extension UICollectionReusableView {
+public extension UICollectionReusableView {
     
-    class func reusableIdentifier() -> String! {
+    public var reusableIdentifier : String {
         
         return NSStringFromClass(self) + "Identifier"
+    }
+    
+    @available(*, deprecated, message="Use reusableIdentifier variable instead.")
+    public class func reusableIdentifier() -> String {
+        
+        return self.reusableIdentifier
     }
 }
 
 
-extension UITableViewCell {
+public extension UITableViewCell {
     
-    class func reusableIdentifier() -> String! {
+    public var reusableIdentifier : String {
         
         return NSStringFromClass(self) + "Identifier"
+    }
+    
+    @available(*, deprecated, message="Use reusableIdentifier variable instead.")
+    public class func reusableIdentifier() -> String {
+        
+        return self.reusableIdentifier
     }
 }
 
 
-extension UIImage {
+public extension UIImage {
     
     /**
     Returns image with size 1x1px of certain color.
     */
-    class func imageWithColor(color : UIColor) -> UIImage {
+    public class func imageWithColor(color : UIColor) -> UIImage {
         
         let rect = CGRectMake(0.0, 0.0, 1.0, 1.0)
         UIGraphicsBeginImageContext(rect.size)
@@ -207,7 +219,8 @@ extension UIImage {
     /**
     Returns current image colored to certain color.
     */
-    func imageWithColor(color: UIColor) -> UIImage {
+    @available(*, deprecated, message="Use similar build-in XCAssetCataloge functionality.")
+    public func imageWithColor(color: UIColor) -> UIImage {
         
         UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
         
@@ -231,9 +244,9 @@ extension UIImage {
 }
 
 
-extension UIColor {
+public extension UIColor {
     
-    convenience init(hexString: String) {
+    public convenience init(hexString: String) {
         
         var red:   CGFloat = 0.0
         var green: CGFloat = 0.0
@@ -294,16 +307,16 @@ extension UIColor {
     }
     
     
-    class func colorWithHexString (hex:String) -> UIColor {
+    public class func colorWithHexString (hex:String) -> UIColor {
         
         return UIColor(hexString: hex)
     }
 }
 
 
-extension UIWindow {
+public extension UIWindow {
     
-    func visibleViewController() -> UIViewController? {
+    public func visibleViewController() -> UIViewController? {
         
         if let rootViewController: UIViewController  = self.rootViewController {
             
@@ -313,7 +326,7 @@ extension UIWindow {
         return nil
     }
     
-    class func getVisibleViewControllerFrom(vc:UIViewController) -> UIViewController {
+    public class func getVisibleViewControllerFrom(vc:UIViewController) -> UIViewController {
         
         if vc.isKindOfClass(UINavigationController.self) {
             
@@ -343,9 +356,9 @@ extension UIWindow {
 }
 
 
-extension UINavigationController {
+public extension UINavigationController {
     
-    func setTransparentNavigationBar() {
+    public func setTransparentNavigationBar() {
         
         self.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
         self.navigationBar.shadowImage = UIImage()
@@ -354,9 +367,9 @@ extension UINavigationController {
 }
 
 
-extension UICollectionView {
+public extension UICollectionView {
     
-    var currentPageNumber: Int {
+    public var currentPageNumber: Int {
         
         return Int(ceil(self.contentOffset.x / self.frame.size.width))
     }
