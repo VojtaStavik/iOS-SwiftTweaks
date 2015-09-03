@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.social_media_url = 'http://twitter.com/VojtaStavik'
   s.authors = { "Vojta Stavik" => "stavik@outlook.com" }
   s.source = { :git => 'https://github.com/VojtaStavik/iOS-SwiftTweaks', :tag => s.version, :branch => 'Swift2' }
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '7.0'
   s.source_files   = '*.swift'
   s.frameworks = 'UIKit'
   s.requires_arc = true
