@@ -19,6 +19,7 @@ public extension LogService {
     }
     
     
+
     @available(iOS 8.0, *)
     public func showAlert(title: String, text: String) -> UIAlertController {
         

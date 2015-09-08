@@ -7,13 +7,13 @@
 
 import Foundation
 
-let log = LogService()
+public typealias ExternalLogAction = (text: String) -> Void
 
-typealias ExternalLogAction = (text: String) -> Void
-
-class LogService {
+public class LogService {
     
-    enum GeneralLogLevel {
+    public static let sharedService = LogService()
+    
+    public enum GeneralLogLevel {
         
         case Debug
         case Production
@@ -25,18 +25,18 @@ class LogService {
     //  log.message("Test remote")(.RemoteLogging)
     //  log.message("Text local")
     
-    enum ExternalLogActions {
+    public enum ExternalLogActions {
         
         case RemoteLogging
         case None
     }
     
     
-    var crashLogAction:     ExternalLogAction? = nil
-    var messageLogAction:   ExternalLogAction? = nil
-    var errorLogAction:     ExternalLogAction? = nil
+    public var crashLogAction:     ExternalLogAction? = nil
+    public var messageLogAction:   ExternalLogAction? = nil
+    public var errorLogAction:     ExternalLogAction? = nil
     
-    var logLevel : GeneralLogLevel = .Debug
+    public var logLevel : GeneralLogLevel = .Debug
     
     
     typealias Message = String -> String
@@ -45,7 +45,6 @@ class LogService {
         
         return { text -> String in
             let filename = NSURL(string: file)?.URLByDeletingPathExtension?.lastPathComponent
-            //let filename = file.lastPathComponent.stringByDeletingPathExtension
             
             let messageText = "\n===============" + " \(filename).\(function)[\(line)]: \n " + text + "\n==============="
             
@@ -54,7 +53,7 @@ class LogService {
     }
     
     
-    func message(text: String, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) -> (ExternalLogActions -> Void)! {
+    public func message(text: String, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) -> (ExternalLogActions -> Void)! {
         
         let message = detailedMessage(file, function, line)
         
@@ -78,7 +77,7 @@ class LogService {
     }
     
     
-    func error(text: String, error: NSError?, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) -> (ExternalLogActions -> Void)! {
+    public func error(text: String, error: NSError?, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) -> (ExternalLogActions -> Void)! {
         
         let errorText = error?.description ?? "No NSError object"
         
