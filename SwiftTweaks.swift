@@ -31,9 +31,9 @@ public func between<T : Comparable>(minimum: T, maximum: T, value: T) -> T {
 }
 
 
-public func repetition(cycles: Int, closure: () -> ()) {
+public func cycle(times: Int, closure: () -> ()) {
     
-    for _ in 0..<cycles {
+    for _ in 0..<times {
         
         closure()
     }
@@ -46,7 +46,7 @@ public func randomStringWithLength (len : Int) -> String {
     
     var randomString = ""
     
-    repetition(len) {
+    cycle(len) {
         
         let rand = Int(arc4random_uniform(UInt32(letters.characters.count)))
         randomString.append(letters[rand])
@@ -89,8 +89,6 @@ public func RGBA(red: CGFloat,_ green: CGFloat,_ blue: CGFloat,_ alpha: CGFloat)
 
 public extension String {
     
-    
-    
     public subscript (i: Int) -> Character {
         return self[self.startIndex.advancedBy(i) ]
     }
@@ -127,6 +125,11 @@ public extension UINavigationController {
 
 
 public extension Array {
+    
+    public var isEmpty : Bool {
+        
+        return count == 0
+    }
     
     public mutating func removeObject<U: Equatable>(object: U) {
         
@@ -167,18 +170,18 @@ public extension UIScreen {
 
 public extension UICollectionReusableView {
     
-    public var reusableIdentifier : String {
+    static public var reusableIdentifier : String {
         
-        return NSStringFromClass(self.dynamicType) + "Identifier"
+        return NSStringFromClass(self) + "Identifier"
     }
 }
 
 
 public extension UITableViewCell {
     
-    public var reusableIdentifier : String {
+    static public var reusableIdentifier : String {
         
-        return NSStringFromClass(self.dynamicType) + "Identifier"
+        return NSStringFromClass(self) + "Identifier"
     }
 }
 
@@ -207,7 +210,7 @@ public extension UIImage {
     /**
     Returns current image colored to certain color.
     */
-    @available(*, deprecated, message="Use similar build-in XCAssetCataloge functionality.")
+    @available(*, deprecated, message="Use similar build-in XCAssetCatalog functionality.")
     public func imageWithColor(color: UIColor) -> UIImage {
         
         UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
@@ -316,20 +319,23 @@ public extension UIWindow {
     
     public class func getVisibleViewControllerFrom(vc:UIViewController) -> UIViewController {
         
-        if vc.isKindOfClass(UINavigationController.self) {
+        if let navigationController = vc as? UINavigationController {
             
-            let navigationController = vc as! UINavigationController
-            return UIWindow.getVisibleViewControllerFrom( navigationController.visibleViewController!)
-        }
+            return UIWindow.getVisibleViewControllerFrom(navigationController.visibleViewController!)
+        
+        } else if let tabBarController = vc as? UITabBarController {
             
-        else if vc.isKindOfClass(UITabBarController.self) {
-            
-            let tabBarController = vc as! UITabBarController
             return UIWindow.getVisibleViewControllerFrom(tabBarController.selectedViewController!)
             
-        }
+        } else if let
+            pageViewController = vc as? UIPageViewController,
+            currentVC = pageViewController.viewControllers?.first
+        {
             
-        else {
+            return UIWindow.getVisibleViewControllerFrom(currentVC)
+            
+        
+        } else {
             
             if let presentedViewController = vc.presentedViewController {
                 

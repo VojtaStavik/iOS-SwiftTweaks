@@ -44,6 +44,7 @@ public class LogService {
     private func detailedMessage(file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) -> Message {
         
         return { text -> String in
+            
             let filename = NSURL(string: file)?.URLByDeletingPathExtension?.lastPathComponent
             
             let messageText = "\n===============" + " \(filename).\(function)[\(line)]: \n " + text + "\n==============="

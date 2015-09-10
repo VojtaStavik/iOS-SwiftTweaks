@@ -8,19 +8,20 @@
 
 import UIKit
 
+// If you want to use swift tweaks with extension, set the EXTENSION flag to TRUE
+
+#if !EXTENSION
+
+@available(iOS 8.0, *)
 public extension LogService {
     
     public func errorWithAlert(text: String, error: NSError?, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) {
         
-        if #available(iOS 8.0, *) {
-            showAlert("ERROR", text: error?.localizedDescription == nil ? text : error!.localizedDescription)
-        }
+        showAlert("ERROR", text: error?.localizedDescription == nil ? text : error!.localizedDescription)
         self.error(text, error: error, file, function, line)
     }
     
     
-
-    @available(iOS 8.0, *)
     public func showAlert(title: String, text: String) -> UIAlertController {
         
         let alert = UIAlertController(title: title, message: text, preferredStyle: .Alert)
@@ -31,3 +32,6 @@ public extension LogService {
         return alert
     }
 }
+
+    
+#endif
