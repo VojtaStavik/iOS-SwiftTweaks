@@ -12,11 +12,15 @@ public extension LogService {
     
     public func errorWithAlert(text: String, error: NSError?, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) {
         
-        showAlert("ERROR", text: error?.localizedDescription == nil ? text : error!.localizedDescription)
+        if #available(iOS 8.0, *) {
+            showAlert("ERROR", text: error?.localizedDescription == nil ? text : error!.localizedDescription)
+        }
         self.error(text, error: error, file, function, line)
     }
     
     
+
+    @available(iOS 8.0, *)
     public func showAlert(title: String, text: String) -> UIAlertController {
         
         let alert = UIAlertController(title: title, message: text, preferredStyle: .Alert)
