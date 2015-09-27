@@ -229,13 +229,14 @@ public extension UITableViewCell
 }
 
 
-public extension UIImage {
+public extension UIImage 
+{
     
     /**
     Returns image with size 1x1px of certain color.
     */
-    public class func imageWithColor(color : UIColor) -> UIImage {
-        
+    public class func imageWithColor(color : UIColor) -> UIImage 
+    {
         let rect = CGRectMake(0.0, 0.0, 1.0, 1.0)
         UIGraphicsBeginImageContext(rect.size)
         let context = UIGraphicsGetCurrentContext()
@@ -247,15 +248,14 @@ public extension UIImage {
         UIGraphicsEndImageContext()
         
         return image
-        
     }
     
     /**
     Returns current image colored to certain color.
     */
     @available(*, deprecated, message="Use similar build-in XCAssetCatalog functionality.")
-    public func imageWithColor(color: UIColor) -> UIImage {
-        
+    public func imageWithColor(color: UIColor) -> UIImage 
+    {
         UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
         
         let context = UIGraphicsGetCurrentContext()
@@ -278,28 +278,26 @@ public extension UIImage {
 }
 
 
-public extension UIColor {
-    
-    public convenience init(hexString: String) {
-        
+public extension UIColor 
+{
+    public convenience init(hexString: String) 
+    {
         var red:   CGFloat = 0.0
         var green: CGFloat = 0.0
         var blue:  CGFloat = 0.0
         var alpha: CGFloat = 1.0
         
-        if hexString.hasPrefix("#") {
-            
+        if hexString.hasPrefix("#") 
+        {
             let index   = hexString.startIndex.advancedBy(1)
             let hex     = hexString.substringFromIndex(index)
             let scanner = NSScanner(string: hex)
             var hexValue: CUnsignedLongLong = 0
             
-            if scanner.scanHexLongLong(&hexValue) {
-                
-                
-                
-                switch (hex.characters.count) {
-                    
+            if scanner.scanHexLongLong(&hexValue) 
+            {
+                switch (hex.characters.count) 
+                {
                 case 3:
                     red   = CGFloat((hexValue & 0xF00) >> 8)       / 15.0
                     green = CGFloat((hexValue & 0x0F0) >> 4)       / 15.0
@@ -341,29 +339,29 @@ public extension UIColor {
     }
     
     
-    public class func colorWithHexString (hex:String) -> UIColor {
-        
+    public class func colorWithHexString (hex:String) -> UIColor 
+    {
         return UIColor(hexString: hex)
     }
 }
 
 
-public extension UIWindow {
-    
-    public func visibleViewController() -> UIViewController? {
-        
-        if let rootViewController: UIViewController  = self.rootViewController {
-            
+public extension UIWindow 
+{
+    public func visibleViewController() -> UIViewController? 
+    {
+        if let rootViewController: UIViewController  = self.rootViewController 
+        {
             return UIWindow.getVisibleViewControllerFrom(rootViewController)
         }
         
         return nil
     }
     
-    public class func getVisibleViewControllerFrom(vc:UIViewController) -> UIViewController {
-        
-        if let navigationController = vc as? UINavigationController {
-            
+    public class func getVisibleViewControllerFrom(vc:UIViewController) -> UIViewController 
+    {
+        if let navigationController = vc as? UINavigationController 
+        {
             return UIWindow.getVisibleViewControllerFrom(navigationController.visibleViewController!)
         
         } else if let tabBarController = vc as? UITabBarController {
@@ -374,13 +372,12 @@ public extension UIWindow {
             pageViewController = vc as? UIPageViewController,
             currentVC = pageViewController.viewControllers?.first
         {
-            
             return UIWindow.getVisibleViewControllerFrom(currentVC)
         
         } else {
             
-            if let presentedViewController = vc.presentedViewController {
-                
+            if let presentedViewController = vc.presentedViewController 
+            {
                 return UIWindow.getVisibleViewControllerFrom(presentedViewController)
                 
             } else {
@@ -392,10 +389,10 @@ public extension UIWindow {
 }
 
 
-public extension UINavigationController {
-    
-    public func setTransparentNavigationBar() {
-        
+public extension UINavigationController 
+{
+    public func setTransparentNavigationBar() 
+    {
         self.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
         self.navigationBar.shadowImage = UIImage()
         self.navigationBar.translucent = true
@@ -403,10 +400,10 @@ public extension UINavigationController {
 }
 
 
-public extension UICollectionView {
-    
-    public var currentPageNumber: Int {
-        
+public extension UICollectionView 
+{
+    public var currentPageNumber: Int 
+    {
         return Int(ceil(self.contentOffset.x / self.frame.size.width))
     }
 }
