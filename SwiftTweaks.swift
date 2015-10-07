@@ -108,6 +108,15 @@ public func RGBA(red: CGFloat,_ green: CGFloat,_ blue: CGFloat,_ alpha: CGFloat)
 
 public extension String
 {
+    public var urlEncodeString: String? {
+        get {
+            let allowedCharacters = NSCharacterSet.URLQueryAllowedCharacterSet().mutableCopy() as! NSMutableCharacterSet
+            allowedCharacters.removeCharactersInString("+/=")
+            
+            return self.stringByAddingPercentEncodingWithAllowedCharacters(allowedCharacters)
+        }
+    }
+    
     public subscript (i: Int) -> Character
     {
         return self[self.startIndex.advancedBy(i) ]
