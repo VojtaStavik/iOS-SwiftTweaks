@@ -140,6 +140,11 @@ public extension String
         return regex?.firstMatchInString(self, options: [], range: NSMakeRange(0, self.characters.count)) != nil
     }
     
+    public func isLongerThen(input: Int) -> Bool
+    {
+        return self.characters.count > input
+    }
+    
     public var isNotEmpty: Bool
     {
         return !isEmpty
