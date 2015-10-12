@@ -54,7 +54,7 @@ public extension dispatch_once_t {
 
 // MARK: -
 
-func removeNotificationObserver(observer: AnyObject?) {
+public func removeNotificationObserver(observer: AnyObject?) {
     
     if let observer = observer {
         
