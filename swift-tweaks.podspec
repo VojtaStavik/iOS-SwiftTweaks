@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'SwiftTweaks'
-  s.version = '2.1.1'
+  s.version = '3.0'
   s.license = 'MIT'
   s.summary = 'Set of helper classes and functions for every Xcode project.'
   s.homepage = 'https://github.com/VojtaStavik/iOS-SwiftTweaks'
