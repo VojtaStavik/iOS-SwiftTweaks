@@ -24,7 +24,6 @@ public class BasicOperation: NSOperation
             
             if newValue == true {
                 willChangeValueForKey("isExecuting")
-                NSThread.detachNewThreadSelector(Selector("main"), toTarget: self, withObject: nil)
                 _executing = newValue
                 didChangeValueForKey("isExecuting")
             } else {
@@ -59,6 +58,7 @@ public class BasicOperation: NSOperation
         }
         
         executing = true
+        self.main()
     }
     
     
