@@ -1,23 +1,20 @@
-public extension UIColor
-{
-    public convenience init(hexString: String)
-    {
+public extension UIColor {
+
+    public convenience init(hexString: String) {
+
         var red:   CGFloat = 0.0
         var green: CGFloat = 0.0
         var blue:  CGFloat = 0.0
         var alpha: CGFloat = 1.0
 
-        if hexString.hasPrefix("#")
-        {
+        if hexString.hasPrefix("#") {
             let index   = hexString.startIndex.advancedBy(1)
             let hex     = hexString.substringFromIndex(index)
             let scanner = NSScanner(string: hex)
             var hexValue: CUnsignedLongLong = 0
 
-            if scanner.scanHexLongLong(&hexValue)
-            {
-                switch (hex.characters.count)
-                {
+            if scanner.scanHexLongLong(&hexValue) {
+                switch (hex.characters.count) {
                 case 3:
                     red   = CGFloat((hexValue & 0xF00) >> 8)       / 15.0
                     green = CGFloat((hexValue & 0x0F0) >> 4)       / 15.0
@@ -57,7 +54,6 @@ public extension UIColor
 
         self.init(red:red, green:green, blue:blue, alpha:alpha)
     }
-
 
     public class func colorWithHexString (hex:String) -> UIColor
     {
