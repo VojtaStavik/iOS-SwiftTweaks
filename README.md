@@ -3,6 +3,6 @@
 --
 ### IMPORTANT:
 
-**This project is no longer in active development on maintanance.** Check out [pNre/ExSwift](https://github.com/pNre/ExSwift) instead ;-)
+**This project is no longer in active development on maintanance.** Check out [pNre/ExSwift](https://github.com/pNre/ExSwift) or [goktugyil/EZSwiftExtensions](https://github.com/goktugyil/EZSwiftExtensions) instead ;-)
 --
 
